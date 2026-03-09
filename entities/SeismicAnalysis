@@ -1,0 +1,96 @@
+{
+  "name": "SeismicAnalysis",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "ID del proyecto"
+    },
+    "name": {
+      "type": "string",
+      "description": "Nombre del an\u00e1lisis"
+    },
+    "zone": {
+      "type": "string",
+      "enum": [
+        "zone_0",
+        "zone_1",
+        "zone_2",
+        "zone_3",
+        "zone_4"
+      ],
+      "default": "zone_2",
+      "description": "Zona s\u00edsmica"
+    },
+    "soil_type": {
+      "type": "string",
+      "enum": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "default": "S2",
+      "description": "Tipo de suelo"
+    },
+    "structural_system": {
+      "type": "string",
+      "enum": [
+        "DM",
+        "DME",
+        "DMO",
+        "MM",
+        "MW"
+      ],
+      "default": "DME",
+      "description": "Sistema estructural"
+    },
+    "importance": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "essential",
+        "critical"
+      ],
+      "default": "normal",
+      "description": "Clasificaci\u00f3n de importancia"
+    },
+    "total_weight": {
+      "type": "number",
+      "description": "Peso total de la estructura W (kg)"
+    },
+    "n_floors": {
+      "type": "number",
+      "description": "N\u00famero de pisos",
+      "default": 3
+    },
+    "floor_height": {
+      "type": "number",
+      "description": "Altura t\u00edpica de piso (m)",
+      "default": 3.0
+    },
+    "floor_weights": {
+      "type": "array",
+      "description": "Pesos por nivel [kg]",
+      "items": {
+        "type": "number"
+      }
+    },
+    "results": {
+      "type": "object",
+      "description": "Resultados del an\u00e1lisis s\u00edsmico"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "calculated"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "project_id",
+    "name"
+  ]
+}

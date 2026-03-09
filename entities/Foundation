@@ -1,0 +1,129 @@
+{
+  "name": "Foundation",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "ID del proyecto"
+    },
+    "name": {
+      "type": "string",
+      "description": "Identificador de la base (ej: B1, B2)"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "centered",
+        "edge",
+        "corner"
+      ],
+      "description": "Tipo: centrada, medianera, esquina"
+    },
+    "calculation_mode": {
+      "type": "string",
+      "enum": [
+        "design",
+        "verification"
+      ],
+      "description": "Modo: dise\u00f1o o verificaci\u00f3n"
+    },
+    "column_load_N": {
+      "type": "number",
+      "description": "Carga axial de columna N (kg)"
+    },
+    "total_load_P": {
+      "type": "number",
+      "description": "Carga total P con peso propio (kg)"
+    },
+    "column_cx": {
+      "type": "number",
+      "description": "Dimensi\u00f3n columna en X (cm)"
+    },
+    "column_cy": {
+      "type": "number",
+      "description": "Dimensi\u00f3n columna en Y (cm)"
+    },
+    "base_width_A": {
+      "type": "number",
+      "description": "Ancho de base A (cm)"
+    },
+    "base_length_B": {
+      "type": "number",
+      "description": "Largo de base B (cm)"
+    },
+    "base_height_H": {
+      "type": "number",
+      "description": "Altura de base H (cm)"
+    },
+    "cover": {
+      "type": "number",
+      "description": "Recubrimiento (cm)"
+    },
+    "soil_capacity": {
+      "type": "number",
+      "description": "Tensi\u00f3n admisible terreno (kg/cm\u00b2)"
+    },
+    "concrete_fc": {
+      "type": "number",
+      "description": "f'c hormig\u00f3n (kg/cm\u00b2)"
+    },
+    "steel_fy": {
+      "type": "number",
+      "description": "fy acero (kg/cm\u00b2)"
+    },
+    "results": {
+      "type": "object",
+      "description": "Resultados del c\u00e1lculo",
+      "properties": {
+        "soil_pressure": {
+          "type": "number"
+        },
+        "utilization": {
+          "type": "number"
+        },
+        "punching_ok": {
+          "type": "boolean"
+        },
+        "reinforcement_x": {
+          "type": "string"
+        },
+        "reinforcement_y": {
+          "type": "string"
+        },
+        "area_steel_x": {
+          "type": "number"
+        },
+        "area_steel_y": {
+          "type": "number"
+        },
+        "moment_x": {
+          "type": "number"
+        },
+        "moment_y": {
+          "type": "number"
+        },
+        "shear_check": {
+          "type": "boolean"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "calculated",
+        "verified",
+        "failed"
+      ],
+      "default": "pending"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "name",
+    "type"
+  ]
+}

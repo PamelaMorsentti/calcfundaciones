@@ -1,0 +1,352 @@
+:
+: PANT
+:
+: INPUT "--------------------------------------------------------------------------------"
+:
+: INPUT "--------------------------------- RESOLUCION DE --------------------------------"
+:
+: INPUT "-------------------------- VIGAS SOBRE LECHO ELASTICO --------------------------"
+:
+: INPUT "--------------------------------------------------------------------------------"
+A$=INKEY$: IF A$="" THEN
+:
+:
+: DIM P(11),M(11),Q(11),ABSC(11),HGRAF(101),RGRAF(101),SGRAF(101)
+:
+Q$=CHR$(80,"-")
+:
+:
+: INPUT "CARACTERISTICAS DE LA VIGA":
+:
+:
+: INPUT "ANCHO  (metros):                 ";B: B=B*100
+:
+: INPUT "ALTO   (metros):                 ";AA: AA=AA*100
+:
+: INPUT "MODULO DE ELASTICIDAD (Kg/cm2):  ";E
+:
+EJ=B*AA^4/12*E
+:
+: INPUT "COEF. DE BALASTO (Kg/cm2):       ";C
+:
+A=(C*B/4/EJ)^0.25
+:
+IP=1.5*2.5/A
+:
+: DEF P(X)=A/2/B*(COS(A*X)+SIN(A*X))*EXP(-A*X)
+:
+: DEF M(X)=0.25/A*(SIN(A*X)-COS(A*X))*EXP(-A*X)
+:
+: DEF Q(X)=-0.5*(COS(A*X)-SIN(A*X))*EXP(-A*X)
+:
+:
+: INPUT "TIPO DE VIGA: ";:
+:
+: PRINT "1)Viga de longitud infinita": PRINT "              2)Viga de longitud semiinfinita": PRINT "              3)Viga de longitud finita        ";:INPUT AA
+:
+: IF AA=2 OR AA=4 THEN
+:
+:
+A$(2)="VIGA DE LONGITUD INFINITA      Origen de Coord.: primera fuerza de la izquierda"
+:
+A$(3)="VIGA DE LONGITUD SEMIINFINITA          Origen de Coord.: extremo de viga       "
+:
+A$(4)="VIGA DE LONGITUD FINITA          Origen de Coord.: extremo izquierdo de viga   "
+:
+:
+: INPUT "CARACTERISTICAS DE LAS CARGAS":
+:
+:
+: INPUT "NUMERO DE FUERZAS:       ";N
+:
+:
+: INPUT A$(AA):
+:
+: DIM F(N): DIM X(N): DIM A(5,5): DIM T(5)
+:
+: FOR F=2 TO N
+:
+: INPUT "FUERZA";F;" (ton):         ";:INPUT F(F): F(F)=F(F)*1000
+:
+: INPUT "POSICION (metros):       ";X(F): X(F)=X(F)*100
+:
+: NEXT F
+:
+: IF AA=4 THEN
+:
+:
+: INPUT "TIPO DE CALCULO:":PRINT TAB(18);"1)Esfuerzos en una secci�n determinada.":PRINT TAB(18);"2)Esfuerzos en un intervalo determinado.<planilla>":PRINT TAB(18);"3)Esfuerzos en un intervalo determinado.<gr�fica>"
+:
+CALC=ASC(INKEY$):IF CALC=18 OR CALC=20 THEN
+:
+:
+: IF CALC=18 THEN
+:
+:
+: INPUT "Posici�n del origen del intervalo  (m): ";ORIG: ORIG=ORIG*100: INPUT "Posici�n del extremo del intervalo (m): ";EXTR: EXTR=EXTR*100: IF EXTR<=ORIG THEN
+:
+:
+: IF AA=3 THEN IF ORIG<0 OR EXTR<0 THEN
+:
+:
+: IF AA=4 THEN IF ORIG<0 OR EXTR<0 OR ORIG>L OR EXTR>L THEN
+:
+:
+: IF CALC THEN
+,,
+:
+:
+: INPUT "POSICION DESEADA (METROS): ";Z: Z=Z*100
+:
+: IF AA=3 THEN IF Z<0 THEN
+:
+:
+: IF AA=4 THEN IF Z>L OR Z<0 THEN
+:
+H=0:S=0:R=0
+:
+: IF AA THEN
+,,
+: GOTO
+:
+CON=0: IF Z=ORIG OR EXTR OR (EXTR-ORIG)/10: CON=CON+2
+:
+H=0:S=0:R=0
+:
+: IF AA THEN
+,,
+:
+P(CON)=H: M(CON)=S: Q(CON)=R: ABSC(CON)=Z
+:
+: IF Z THEN
+:
+:
+NGRAF=2:HMAX=-1E37:HMIN=1E37:SMAX=-1E37:SMIN=1E37:RMAX=-1E37:RMIN=1E37:CON=0: FOR Z=ORIG TO EXTR STEP (EXTR-ORIG)/100: CON=CON+2
+:
+H=0:S=0:R=0
+:
+: IF AA THEN
+,,
+:
+S=S*0.01: R=R*1000
+:
+HGRAF(CON)=H: SGRAF(CON)=S: RGRAF(CON)=R
+:
+: IF H>HMAX THEN HMAX=H
+:
+: IF H<HMIN THEN HMIN=H
+:
+: IF S>SMAX THEN SMAX=S
+:
+: IF S<SMIN THEN SMIN=S
+:
+: IF R>RMAX THEN RMAX=R
+:
+: IF R<RMIN THEN RMIN=R
+:
+: IF Z THEN
+:
+: IF NGRAF=2 THEN MAX=HMAX :MIN=HMIN :GOTO
+:
+: IF NGRAF=3 THEN MAX=SMAX :MIN=SMIN : MAX=RMAX: MIN=RMIN
+:
+: IF ABS(MAX)<ABS(MAX-MIN) THEN MM=MAX : ELSE MM=MAX-MIN
+:
+:
+: IF NGRAF=2 THEN PRINT TAB(10): PRINT "Presi�n Terreno": PRINT TAB(11): PRINT "kg/cm2": GOTO
+:
+: IF NGRAF=3 THEN FOR Z=2 TO 100 STEP 2: HGRAF(Z)=SGRAF(Z): NEXT Z: PRINT TAB(10): PRINT "Momento Flector ": PRINT TAB(11): PRINT "(tm)": GOTO
+:
+: IF NGRAF=4 THEN FOR Z=2 TO 100 STEP 2: HGRAF(Z)=RGRAF(Z): NEXT Z: PRINT TAB(10): PRINT "Esf. de Corte": PRINT TAB(11): PRINT "(t)"
+:
+: FOR Z=2 TO 100 STEP 2: PLOT(15*(10+Z)/10,40+20*HGRAF(Z)/MM): NEXT Z: PLOT(1,70):DRAW"R135D45R1U45D45L136U45L1D45U45D20R136"
+:
+: IF NGRAF=4 THEN
+:
+NGRAF=NGRAF+2: PRINT TAB(22): PRINT "-Pulse una tecla-"
+:
+: IF INKEY$="" THEN
+ : ELSE
+:
+:
+: FOR F=2 TO N
+:
+SG=SGN(X(F)-Z): X=ABS(X(F)-Z)
+:
+: IF SG=0 OR SG=2
+:
+:
+H=F(F)* P(X)+H
+:
+S=F(F)* M(X)+S
+:
+R=SG*F(F)* Q(X)+R
+:
+: NEXT F
+:
+: RETURN
+:
+: FOR F=2 TO N
+:
+T(2)=T(2)+ M(X(F))*F(F)/4/A
+:
+T(3)=T(3)+ Q(X(F))*F(F)/3
+:
+SG=SGN(X(F)-Z): X=ABS(X(F)-Z): IF SG=0 OR SG=2
+:
+:
+H=(T(2)* P(3*IP+Z)+T(3)* P(IP+Z)+ P(X))*F(F)+H
+:
+S=(T(2)* M(3*IP+Z)+T(3)* M(IP+Z)+ M(X))*F(F)+S
+:
+R=(-T(2)* Q(3*IP+Z)+T(3)* Q(IP+Z)+SG* Q(X))*F(F)+R
+:
+: NEXT F
+:
+: RETURN
+:
+: INPUT "LONGITUD DE LA VIGA (METROS): ";L: L=L*100
+:
+A(2,2)= M(3*IP)/4/A: A(2,3)= M(IP)/4/A: A(2,4)= M(L+IP)/4/A: A(2,5)= M(L+3*IP)/4/A
+:
+A(3,2)= Q(3*IP)/3: A(3,3)= Q(IP)/3: A(3,4)= -Q(L+IP)/3: A(3,5)= -Q(L+3*IP)/3
+:
+A(4,2)= M(L+3*IP)/4/A: A(4,3)= M(L+IP)/4/A: A(4,4)= M(IP)/4/A: A(4,5)= M(3*IP)/4/A
+:
+A(5,2)= Q(L+3*IP)/3: A(5,3)= Q(L+IP)/3: A(5,4)= -Q(IP)/3: A(5,5)= -Q(3*IP)/3
+:
+: FOR F=2 TO N
+:
+T(2)=T(2)+ M(X(F))*F(F)/4/A+T(2): T(3)= Q(X(F))*F(F)/3+T(3): T(4)=T(4)+ M(L+X(F))*F(F)/4/A+T(4): T(5)=T(5)+ Q(L+X(F))*F(F)/3+T(5)
+:
+: NEXT F
+:
+: FOR K=2 TO 4
+:
+K1=K+2
+:
+E=A(K,K)
+:
+: IF ABS (E)<1E-37 THEN
+:
+:
+: FOR J=K1 TO 5
+:
+: IF ABS (A(J,K))>1E-37 THEN
+:
+:
+: FOR D=K TO 5
+:
+E=A(K,D): A(K,D)=A(J,D): A(J,D)=E
+:
+: NEXT D
+:
+E=T(K): T(K)=T(J): T(J)=E
+:
+:
+E=A(K,K)
+:
+:
+: FOR J
+:
+: NEXT J
+:
+E=A(K,K)
+:
+: FOR J=K1 TO 5
+:
+A(K,J)=A(K,J)/E
+:
+: NEXT J
+:
+T(K)=T(K)/E
+:
+: FOR I=K1 TO 5
+:
+E=A(I,K)
+:
+: FOR J=K1 TO 5: A(I,J)=A(I,J)-E*A(K,J): NEXT J
+:
+T(I)=T(I)-E*T(K)
+:
+: NEXT I
+:
+: NEXT K
+:
+: IF ABS (A(5,5))<1E-37 THEN
+:
+:
+T(5)=T(5)/A(5,5)
+:
+: FOR D=2 TO 4
+:
+K=5-D
+:
+K1=K+2
+:
+: FOR J=K1 TO 5: T(K)=T(K)-A(K,J)*T(J): NEXT J
+:
+: NEXT D
+:
+:
+: FOR F=2 TO N
+:
+SG=SGN(X(F)-Z): X=ABS (X(F)-Z): IF SG=0 OR SG=2
+:
+H=F(F)* P(X)+H: S=F(F)* M(X)+S: R=SG*F(F)* Q(X)+R
+:
+: NEXT F
+:
+H=T(2)* P(3*IP+Z)+T(3)* P(IP+Z)+T(4)* P(L+IP+Z)+T(5)* P(L+3*IP+Z)+H
+:
+S=T(2)* M(3*IP+Z)+T(3)* M(IP+Z)+T(4)* M(L+IP+Z)+T(5)* M(L+3*IP+Z)+S
+:
+R=-T(2)* Q(3*IP+Z)+T(3)* Q(IP+Z)+T(4)* Q(L+IP+Z)+T(5)* Q(L+3*IP+Z)+R
+:
+:
+Z=Z/100: H=H: S=S*0.01: R=R*1000
+:
+:
+: INPUT "RESULTADOS":
+:
+:
+: INPUT "POSICION DESEADA   : ";PRINT "###.###";Z;: PRINT " metros"
+:
+: INPUT "PRESION DEL TERRENO: ";PRINT "###.###";H;: PRINT " Kg/cm2"
+:
+: INPUT "MOMENTO FLECTOR    : ";PRINT "###.###";S;: PRINT " tm"
+:
+: INPUT "ESFUERZO DE CORTE  : ";PRINT "###.###";R;: PRINT " ton"
+:
+:
+:
+: INPUT "RESULTADOS":
+: INPUT Q$
+:
+: PRINT TAB(21): PRINT "POSICION";TAB(25);"PRESION";TAB(41);"MOMENTO";TAB(57);"ESFUERZO"
+:
+: PRINT TAB(22): PRINT "TERRENO";TAB(41);"FLECTOR";TAB(57);" CORTE"
+:
+: PRINT TAB(23): PRINT "(metros)";TAB(34);"(kg/cm2)";TAB(49);" (tm)";TAB(64);" (ton)"
+:
+: PRINT Q$
+:
+: FOR CON=2 TO 11:ABSC(CON)=ABSC(CON)/100: M(CON)=M(CON)*0.01: Q(CON)=Q(CON)*1000: PRINT TAB(22);PRINT "###.###";ABSC(CON);:PRINT TAB(25);PRINT "###.###";P(CON);:PRINT TAB(41);PRINT "###.###";M(CON);:PRINT TAB(57);PRINT "###.###";Q(CON): NEXT CON
+:
+: PRINT Q$: FOR I=20 TO 74 STEP 18: PRINT I: PRINT TAB(19);"|":PRINT TAB(40);"|":PRINT TAB(56);"|": NEXT I
+:
+: PRINT TAB(22): PRINT "DESEA OTRA POSICION (S/N) "
+:
+A$=INKEY$: IF A$="S" OR A$="s" THEN CALC=0: GOTO
+:
+: IF A$<>"N" AND A$<>"n" THEN
+:
+:
+: PRINT TAB(23): PRINT "DESEA OTRA VIGA     (S/N) "
+:
+A$=INKEY$: IF A$="S" OR A$="s" THEN END
+:
+: IF A$<>"N" AND A$<>"n" THEN
+:
+:
+END

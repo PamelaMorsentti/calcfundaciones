@@ -1,0 +1,477 @@
+ ******************************************************
+ ************* CALCULO DE BASES AISLADAS **************
+ *************     CON CARGA NORMAL      **************
+ ******************************************************
+ PANT
+:U$=CHR$(N," "):T$=CHR$(P,"-"):BS=
+:
+: INPUT "CALCULO DE BASES CON CARGA NORMAL":
+ T$
+:
+: INPUT "TIPO DE CALCULO:":
+:
+: PRINT "F1";: PRINT "-C�lculo de una base.":
+: PRINT "F2";: PRINT "-Verificaci�n de una base."
+A$=INKEY$:TC=ASC(A$): IF TC=18 OR TC=19 THEN
+:
+:
+: INPUT "TIPO DE BASE:":
+:
+: PRINT "F1";: PRINT "-Centrada.":
+: PRINT "F2";: PRINT "-Medianera.":
+: PRINT "F3";: PRINT "-Esquina.   ":
+A$=INKEY$:TI=ASC(A$): IF TI=18 OR TI=20 THEN
+:
+: IF TI =
+ THEN,
+,
+:
+: PRINT "********** INGRESO DE DATOS ***********"
+:
+: IF TC=19 THEN PANT
+:
+: INPUT "N: Carga que trae la columna.":
+: INPUT "N      (kg)= ";: INPUT N:
+:
+: INPUT "P: Carga de la columna + peso propio base + peso terreno ubicado sobre �sta.":
+: INPUT "P      (kg)= ";: INPUT P:
+:
+: INPUT "cx: Dimensi�n de la columna en direcci�n X.":
+: INPUT "cx     (cm)= ";: INPUT CX:
+:
+: INPUT "cy: Dimensi�n de la columna en direcci�n Y.":
+: INPUT "cy     (cm)= ";: INPUT CY:
+:
+: IF TC=18 THEN
+:
+:
+: INPUT "ax: Dimensi�n de la base en direcci�n X.":
+: INPUT "ax     (cm)= ";: INPUT AX:
+:
+: INPUT "ay: Dimensi�n de la base en direcci�n Y.":
+: INPUT "ay     (cm)= ";: INPUT AY:
+:
+: INPUT "do: Altura total de la base.":
+: INPUT "do     (cm)= ";: INPUT O:
+:
+: INPUT "d: Altura del tal�n de la base.":
+: INPUT "d      (cm)= ";: INPUT D:
+:
+: INPUT CHR$( );"r: Tensi�n de trabajo del Hormig�n. (105/140/175/245)":
+ PANT:
+: INPUT CHR$( );"r (kg/cm2)= ";: INPUT BR:
+:
+T=
+: IF BR=105 THEN
+: IF BR=140 THEN
+: IF BR=175 THEN
+: IF BR=245 THEN
+: IF T=1 THEN
+:
+: PRINT "Valor invalido de ";CHR$( );"r":
+ PANT:
+: PRINT "(Intente nuevamente)":
+ PANT:
+: PRINT "            ":
+:
+:
+ PANT:
+: PRINT "                      ":
+ PANT:
+: PRINT "                      "
+:
+: INPUT CHR$( );"t: Tensi�n admisible del terreno.":
+ PANT:
+: INPUT CHR$( );"t (kg/cm2)= ";: INPUT TT:
+:
+:
+: IF TC=18 THEN
+: INPUT "ax/ay: Relaci�n entre los lados de la base.":
+ PANT:
+: INPUT "ax/ay      = ";: INPUT CF:
+ PANT
+ PANT:
+:
+:
+BY=CY+2: BX=CX+2: IF TI =18 THEN
+:
+:
+: INPUT "t: Altura  del tensor medido desde el eje de �ste al fondo de la base.":
+ PANT:
+: INPUT "t       (m)= ";: INPUT HH : HH=HH*100: BX=BX+30
+:PANT
+ PANT:
+:
+:
+: IF TI=20 THEN BY=BY+30
+:
+:
+: INPUT "Datos correctos (S/N)"
+A$=INKEY$: IF A$="N" OR A$="n" THEN
+:
+: IF A$="S" OR A$="s" THEN
+ : ELSE
+:
+:
+: IF TC=19 THEN
+:
+:
+: PRINT "********** CALCULO DIMENSIONES DE LA BASE ************"
+AX= SQR((CF*P/TT)):AY=INT(AX/CF)
+: IF P/(AX*AY) > TT THEN AX=AX+2: AY=INT(AX/CF): GOTO
+:
+: IF AX < BX THEN AX=BX+2
+:
+: IF AY < BY THEN AY=BY+2
+:
+: IF AX > BX THEN AX=BX
+:
+: IF AY > BY THEN AY=BY
+:
+OY=(AY-CY)/2: OX=(AX-CX)/2
+: IF OY > OX THEN O=OY: GOTO
+:
+O=OX
+O=INT(O)
+: IF O < 15 THEN O=15: GOTO
+:
+DX=O-15*(AX-BX): DY=O-15*(AY-BY)
+: IF DY > DX THEN D=DX: GOTO
+:
+D=DY
+D=INT(D)
+:
+: IF D < 15 THEN
+:
+D=15
+:
+: PRINT "******* CALCULO MOMENTOS FLECTORES *********"
+XD=N*AX*(AX-CX)/8/1000 :YD=N*AY*(AY-CY)/8/1000: H=O-2
+:
+: IF TI =18 THEN XD=1.5*XD
+:
+: IF TI = 20 THEN YD=1.5*YD
+:
+: LET L$="CAMBIO" THEN
+:
+:
+: PRINT "******* DIMENSIONADO DE LA ARMADURA ********"
+EX=100*XD*BY*H^2/BR
+: IF EX < 0.001 THEN
+:
+ZX=0.001*(z*EX*(0.33+EX^3)/
+u: SX=0.001*BS*XD*ZX*H
+:
+EY=100*YD*BX*H^2/BR
+: IF EY < 0.001 THEN
+:
+ZY=0.001*(z*EY*(0.33+EY^3)/
+u:SY=0.001*BS*YD*ZY*H
+:
+SXMIN=SX:SYMIN=SY
+:
+: PRINT "********** VERIFICACION AL PUNZONADO *********"
+: PRINT "******LL: cte. que vale 1(centrada), 0.6(medianera) o 0.3(esquina) *****"
+LL=(TI=18)*0.001+(TI=19)*0.6+(TI=20)*0.3
+C=
+PI* (CX*CY):DK=C*H: DR=C*H: U=LL*1.5*DR: PX=H*(O-D)*(DR*BX)*(AX-BX): PY=H*(O-D)*(DR*BY)*(AY-BY): PM=(PX*PY)/3
+:
+PX=H*(O-D)*(DR*BX)*(AX-BX): PY=H*(O-D)*(DR*BY)*(AY-BY)
+:
+: IF TI=19 THEN PX=H*(O-D)*(DR/3*1.25*CX/3)*(AX-BX)
+:
+: IF TI=20 THEN PX=H*(O-D)*(DR/3*1.25*CX/3)*(AX-BX): PY=H*(O-D)*(DR/3*1.25*CY/3)*(AY-BY)
+:
+PM=(PX*PY)/3: PS=N*AX*AY: QR=N*LL*1.5*PS*DK^3: TR=QR/U*PM
+:
+: IF TI=18 THEN KX=DK*SX*AY: KY=DK*SY*AX
+:
+: IF TI=19 THEN KX=DK*SX*AY: KY=(DK*CX)/3*SY*AX
+:
+: IF TI=20 THEN KX=(DK*CY)/3*SX*AY: KY=(DK*CX)/3*SY*AX
+:
+: IF KX < SX THEN KX=SX
+:
+: IF KY < SY THEN KY=SY
+:
+SK=(KX*KY)/3: UK=SK*100/PM*DK: G1=0.017*SQR(UK)
+:
+OO=INT(O*0.001*(: IF OO=2 THEN OO=2
+:
+KA=T*G1*OO
+:
+: IF TC=19 THEN
+:
+: IF KA > TR THEN
+:
+O=O+2: GOTO
+:
+L$=""
+:
+: PRINT "*********** IMPRESION DE RESULTADOS *************"
+:
+: PRINT "Dimensiones":
+: PRINT TAB(12);"ax= ";AX;"cm":
+: PRINT TAB(12);"ay= ";AY;"cm":
+: PRINT TAB(12);"do= ";O;"cm":
+: PRINT TAB(12);"d = ";D;"cm"
+:
+: PRINT "Esfuerzos":X=XD:
+: PRINT TAB(12);"Mx=";X*1000;"tcm":X=YD:
+: PRINT TAB(12);"My=";X*1000;"tcm"
+:
+: PRINT "Tensiones":X=P/(AX*AY)/1000:
+: PRINT TAB(12);CHR$( );"=P/(Ax*Ay)=";X*1000;"kg/cm2":X=N/(AX*AY)/1000:
+: PRINT TAB(12);CHR$( );"=N/(Ax*Ay)=";X*1000;"kg/cm2"
+:
+: PRINT "Armaduras":X=SX*1000:
+: PRINT TAB(12);"Asx= ";X*1000;"cm2 (";INT (SX*0.01*PI/AY)*1000;"cm2/m)":X=SY*1000:
+: PRINT TAB(12);"Asy= ";X*1000;"cm2 (";INT (SY*0.01*PI/AX)*1000;"cm2/m)"
+:
+: IF P/(AX*AY) > TT THEN
+: PRINT TAB(16):
+: PRINT TAB(16): PRINT "!!!!!!!!!!!!!!!!!!!!":
+: PRINT TAB(16): PRINT "    No verifica":
+: PRINT TAB(16): PRINT "tensi�n del terreno.":
+: PRINT TAB(16): PRINT "��������������������":
+:
+:
+: PRINT T$:
+: PRINT TAB(16): INPUT "PULSE UNA TECLA":
+:
+A$=INKEY$: IF A$="" THEN
+:
+:
+: IF TI=18 THEN
+:
+MX=N*(AX-CX)/8/1000: FX=1000*MX/HH: MXC=MX*(2*O/HH)
+:
+:
+: PRINT "Esfuerzos en la columna":X=N:
+: PRINT TAB(22);"N  =";X;"kg": X=MX*1000:
+: PRINT TAB(22);"Mx =";X*1000;"tcm": X=MXC*1000:
+: PRINT TAB(22);"Mx'=";X*1000;"tcm"
+:
+: IF TI=20 THEN
+:
+:
+: PRINT "Esfuerzos en el tensor":X=FX*1000:
+: PRINT TAB(22);"FX =";X*1000;"kg (Tensor Articulado)":
+:
+:
+MY=N*(AY-CY)/8/1000: FY=1000*MY/HH: MYC=MY*(2*O/HH)
+:
+: IF TI=20 THEN X=MY*1000:
+: PRINT TAB(22);"My =";X*1000;"tcm": X=MYC*1000:
+: PRINT TAB(22);"My'=";X*1000;"tcm"
+:
+:
+: PRINT "Esfuerzos en los tensores":X=FX*1000:
+: PRINT TAB(22);"FX =";X*1000;"kg":X=FY*1000:
+: PRINT TAB(22);"FY =";X*1000;"kg (Tensores Articulados)":
+:
+:
+: PRINT TAB(22): PRINT "M :Momento en el fondo de la base.":
+: PRINT TAB(22): PRINT "M':Momento en la uni�n tronco columna."
+:
+:
+: PRINT T$:
+: PRINT TAB(16): INPUT "PULSE UNA TECLA":
+:
+: IF INKEY$="" THEN
+:
+:
+: PRINT "Coeficientes del punzonado":X=DR:
+: PRINT TAB(23);"dr= ";X;"cm":X=DK:
+: PRINT TAB(23);"dk= ";X;"cm":X=U:
+: PRINT TAB(24);CHR$( );"= ";X;"cm":
+:
+X=PX:
+: PRINT TAB(22);"hx'= ";X"cm":X=PY:
+: PRINT TAB(22);"hy'= ";X;"cm":X=PM:
+: PRINT TAB(22);"hm'= ";X;"cm":X=QR:
+: PRINT TAB(23);"Qr= ";X;"Kg":X=TR*1000:
+: PRINT TAB(23);CHR$( );"r= ";X*1000;"Kg/cm2"
+:
+X=KX*1000:
+: PRINT TAB(21);"Askx= ";X*1000;"cm2":X=KY*1000:
+: PRINT TAB(21);"Asky= ";X*1000;"cm2":X=UK*1000:
+: PRINT TAB(23);CHR$( );"k= ";X*1000;"%":X=G1*1000:
+: PRINT TAB(23);CHR$( );"1= ";X*1000
+:
+X=KA*1000:
+: PRINT TAB(14);CHR$( );"resistente= ";X*1000;"Kg/cm2"
+:
+: IF KA > TR THEN
+: PRINT TAB(13):
+: PRINT TAB(13): PRINT "!!!!!!!!!!!!!":
+: PRINT TAB(13): PRINT " No verifica":
+: PRINT TAB(13): PRINT "al punzonado.":
+: PRINT TAB(13): PRINT "�������������":
+:
+:
+: PRINT T$:
+: PRINT TAB(16): INPUT "PULSE UNA TECLA":
+:
+: IF INKEY$="" THEN
+ :
+:
+:
+: PRINT "ACLARACION:"
+:
+: IF TC=18 THEN
+: PRINT "Si se utiliza una armadura a flexi�n mayor que la sugerida, esta permite una    disminuci�n del problema del punzonado ocasionando generalmente disminuci�n de  las dimensiones de la zapata en altura."
+:
+: IF TC=18 THEN
+: PRINT "Si desea recalcular esta misma zapata para otro valor de la armadura pulse F4"
+:
+: IF TC=19 THEN
+: PRINT "Si se utiliza una armadura a flexi�n mayor que la sugerida, esta permite una    disminuci�n del problema del punzonado."
+:
+: IF TC=19 THEN
+: PRINT "Si desea reverificar esta misma zapata para otro valor de la armadura pulse F4"
+:
+: INPUT "PULSE":
+:
+: PRINT T$:
+: PRINT TAB(20): PRINT "F1";: PRINT " para un nuevo c�lculo.":
+: PRINT TAB(21): PRINT "F2";: PRINT " para reimprimir los resultados."
+:
+: PRINT TAB(22): PRINT "F3";: PRINT " para terminar y salir del sistema."
+:
+: PRINT TAB(23): PRINT "F4";: PRINT " para recalcular con nueva armadura."
+:
+A$=INKEY$: IF ASC(A$)=18 OR ASC(A$)=21 THEN
+:
+: IF A$="1" THEN
+:
+: IF A$="2" THEN
+:
+: IF A$="3" THEN END
+:
+: IF A$="4" THEN
+ :
+:
+X=SXMIN*1000:
+: PRINT "Armadura a colocar en sentido X (cm2)(M�nima=";X*1000;"cm2):";: INPUT SX: X=SYMIN*1000:
+: PRINT "Armadura a colocar en sentido Y (cm2)(M�nima=";X*1000;"cm2):";: INPUT SY
+:
+: IF SX < SXMIN OR SY < SYMIN THEN
+: PRINT TAB(15);"La armadura a colocar debe ser mayor":
+: PRINT TAB(15);"  o igual que la m�nima calculada.":
+:
+:
+: IF TC=18 THEN L$="CAMBIO":
+ :
+:
+:
+: PRINT "*********** PRESENTACION RESULTADOS *************"
+:
+:
+:
+: INPUT "RESULTADOS DE LA ZAPATA ";
+:
+: IF TI=18 THEN PRINT "CENTRADA"
+:
+: IF TI=19 THEN PRINT "MEDIANERA"
+:
+: IF TI=20 THEN PRINT "ESQUINA"
+:
+:
+:
+: PRINT T$
+:
+: PRINT TAB(20);"Acero:    ";CHR$( );"s= 4200 Kg/cm2"
+:
+: PRINT TAB(21);"Hormigon: ";CHR$( );"r=";BR;TAB(11);"Kg/cm2"
+:
+: PRINT TAB(22);"Terreno:  ";CHR$( );"t=";TT;TAB(11);"Kg/cm2"
+:
+: PRINT TAB(20);"Carga    N=";N;"Kg";TAB(8);"P=";P;"Kg"
+:
+: PRINT TAB(21);"Columna cx=";CX;"cm";TAB(7);"cy=";CY;"cm"
+:
+: PRINT TAB(22);"Base    bx=";BX;"cm";TAB(7);"by=";BY;"cm"
+:
+: IF TI=18 THEN
+: PRINT TAB(23);"Tensor   h=";HH;"cm"
+:
+:
+:
+:
+:
+: PRINT "********* SUBRUTINA DE REDONDEO ***********"
+:
+: IF (X*10-INT(X*10)) >= 0.5 THEN X=INT(X*10)+1/10: RETURN
+X=INT(X*10)/10
+ RETURN
+:
+:
+: PRINT "********* SUBRUTINA DE REDONDEO ***********"
+:
+: IF (X-INT(X)) >= 0.5 THEN X=INT(X)+1: RETURN
+X=INT(X)+0.5
+ RETURN
+:
+:
+: PRINT "******** GRAFICA DE BASE CENTRADA *********"
+:
+:
+: PRINT "B A S E    C E N T R A D A"
+:
+PLOT(1,200):DRAW"R200U13L1D13U13L200D13R1U13":PLOT(1,122):PLOT(1,2):PLOT(2,122):PLOT(16,2):DRAW"L43R8U20R1D20R26U20R1D20"
+:
+PLOT(1,70):DRAW"R200U50R1D50U50L200D50L1U50":PLOT(1,70):PLOT(1,53):PLOT(1,20):PLOT(1,39):PLOT(2,20):PLOT(16,39):PLOT(2,70):PLOT(16,53):DRAW"L43U14R1D14U14R42D14L1U14":PLOT(12,51):DRAW"U10L35D10R35":PLOT(11,50)
+:
+PLOT(1,20):DRAW"R5L3D50L2R5":PLOT(1,80):DRAW"U5D3R200D2U5":PLOT(1,29):DRAW"D5U3R43U2D5":PLOT(1,61):DRAW"U5D3R35D2U5":PLOT(1,41):DRAW"R5L3D10L2R5":PLOT(32,39):DRAW"L5R3D14R2L5"
+:
+ PRINT TAB(23);"ay": PRINT TAB(10);" ax ": PRINT TAB(21);" bx ": PRINT TAB(25);"cx ": PRINT TAB(23);"cy": PRINT TAB(23);"by"
+:
+PLOT(1,200):DRAW"U5D3R200D2U5":PLOT(1,200):DRAW"L5R2U13L2R5":PLOT(1,124):DRAW"L5R2U40L2R5"
+:
+ PRINT TAB(22);" ax ": PRINT TAB(20);"d": PRINT TAB(18);"do"
+:
+ RETURN
+:
+: PRINT "******** GRAFICA DE BASE MEDIANERA ********"
+:
+:
+: PRINT "B A S E   M E D I A N E R A"
+:
+PLOT(1,200):DRAW"R117U13L1D13U13L117D13U40R1D40":PLOT(2,122):PLOT(16,2):DRAW"L35U20R1D20R26U8R50L49D8": PLOT(8,105):DRAW"R50L50U3R1D3"
+:
+PLOT(1,22):DRAW"D76R1U76R117D76R1U76D76L117U30R39U14R1D14U14L40D2R35D10L35":PLOT(2,22):PLOT(20,37):PLOT(2,81):PLOT(20,51):PLOT(1,45)
+:
+PLOT(1,22):DRAW"L5R2D76L2R5":PLOT(1,37):DRAW"L5R2D14L2R5":PLOT(33,39):DRAW"R5L2D10R2L5":PLOT(1,25):DRAW"R40U2D5":PLOT(1,62):DRAW"R35D2U5":PLOT(1,89):DRAW"D5U2R118D2U5"
+:
+PLOT(1,200):DRAW"D5U2R118D2U5":PLOT(1,200):DRAW"L5R2U40L2R5":PLOT(1,200):DRAW"L5R2U13L2R5":PLOT(1,113):DRAW"R5L2D52R2L5"
+:
+ PRINT TAB(23);"ay": PRINT TAB(12);" ax ": PRINT TAB(20);" bx ": PRINT TAB(26);"cx ": PRINT TAB(23);"cy": PRINT TAB(23);"by"
+:
+ PRINT TAB(22);" ax ": PRINT TAB(20);"d": PRINT TAB(18);"do": PRINT TAB(18);"t"
+:
+ RETURN
+:
+: PRINT "******** GRAFICA DE BASE ESQUINA *********"
+:
+:
+: PRINT "B A S E   E S Q U I N A"
+:
+PLOT(1,200):DRAW"R117U13L1D13U13L117D13U40R1D40":PLOT(2,122):PLOT(16,2):DRAW"L36U20R1D20R27U8R50L49D8": PLOT(8,105):DRAW"R50L50U3R1D3":PLOT(4,105):DRAW"D9L18U9R18":PLOT(3,110)
+:
+PLOT(1,81):DRAW"U43R1D43R115U43R1D43U43L115D13R39U13R1D13U13L40R35D11L35":PLOT(2,81):PLOT(20,51):PLOT(1,45)
+:
+PLOT(1,38):DRAW"L5R2D43L2R5":PLOT(1,38):DRAW"L5R2D13L2R5":PLOT(33,38):DRAW"D11R2L5":PLOT(1,29):DRAW"U5D2R40U2D5":PLOT(1,62):DRAW"R35D2U5":PLOT(1,89):DRAW"D5U2R118D2U5"
+:
+PLOT(1,200):DRAW"D5U2R118D2U5":PLOT(1,200):DRAW"L5R2U40L2R5":PLOT(1,200):DRAW"L5R2U13L2R5":PLOT(1,113):DRAW"R5L2D52R2L5"
+:
+ PRINT TAB(23);"ay": PRINT TAB(12);" ax ": PRINT TAB(20);" bx ": PRINT TAB(26);"cx ": PRINT TAB(23);"cy": PRINT TAB(23);"by"
+:
+ PRINT TAB(22);" ax ": PRINT TAB(20);"d": PRINT TAB(18);"do": PRINT TAB(18);"t"
+:
+ RETURN
+:
+: PRINT "***** SUBRUTINA DE BORRADO DE LA ULTIMA LINEA DE LA PANTALLA *****"
+:
+: INPUT U$:
+ RETURN

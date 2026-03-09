@@ -1,0 +1,78 @@
+REPORTE COMPARATIVO: CÁLCULO DE BASES AISLADAS Y VIGAS SOBRE LECHO ELÁSTICO
+
+---
+
+1. CRITERIOS DE CÁLCULO Y HIPÓTESIS
+
+Programa original:
+- Bases: Carga normal, peso propio, dimensiones columna/base, tensión hormigón, tensión terreno, punzonado, tipos de base.
+- Vigas: Modelo Winkler, módulo elasticidad, coeficiente balasto, momento de inercia, fuerzas puntuales, tipos de viga.
+
+App actual:
+- Parámetros equivalentes: dimensiones, módulo elasticidad, coeficiente balasto, tipos de base/viga, verificación de esfuerzos.
+- Lógica de verificación y cálculo similar.
+
+---
+
+2. FÓRMULAS UTILIZADAS
+
+Programa original:
+- Momento de inercia: EJ = B · AA⁴ / 12 · E
+- Parámetro de rigidez: A = (C · B / 4 / EJ)^(0.25)
+- Presión: P(X) = A/(2B)[cos(A X)+sin(A X)]·exp(-A X)
+- Momento flector: M(X) = 0.25/A[sin(A X)-cos(A X)]·exp(-A X)
+- Esfuerzo cortante: Q(X) = -0.5[cos(A X)-sin(A X)]·exp(-A X)
+- Dimensionado armadura, punzonado, tensiones: fórmulas específicas según tipo de base.
+
+App actual:
+- Se detectan fórmulas equivalentes en componentes de cálculo.
+- Variables y funciones reflejan el mismo enfoque técnico.
+- Arrays y funciones para diagramas, esfuerzos y resultados.
+
+---
+
+3. COMPARACIÓN DETALLADA DE CÁLCULOS
+
+A. Dimensionado y verificación de punzonado:
+- Programa original:
+  - LL = 1 (centrada), 0.6 (medianera), 0.3 (esquina)
+  - C = π·(CX·CY), DK = C·H, DR = C·H
+  - U = LL·1.5·DR
+  - PX = H·(O-D)·(DR·BX)·(AX-BX)
+  - PY = H·(O-D)·(DR·BY)·(AY-BY)
+  - PM = (PX·PY)/3
+  - PS = N·AX·AY
+  - QR = N·LL·1.5·PS·DK³
+  - TR = QR/U·PM
+  - KX, KY, SK, UK, G1, KA: fórmulas para armadura y punzonado
+
+- App actual:
+  - Se utilizan fórmulas similares, pero pueden existir diferencias en la implementación, conversión de unidades, o condiciones de verificación.
+  - Revisar si los valores de LL, DK, DR, PX, PY, PM, QR, TR, KX, KY, SK, UK, G1, KA se calculan exactamente igual.
+  - Verificar que las conversiones de unidades (cm, m, kg, t) sean consistentes.
+  - Revisar el manejo de mínimos/máximos, redondeos y condiciones de seguridad.
+
+B. Resultados erróneos en punzonado:
+- Posibles causas:
+  - Diferencias en fórmulas o parámetros (por ejemplo, LL mal asignado según tipo de base).
+  - Conversión de unidades incorrecta.
+  - Errores en la lógica de verificación (condiciones, bucles, redondeos).
+  - Falta de actualización de variables intermedias.
+  - Diferencias en el manejo de datos de entrada (por ejemplo, dimensiones mínimas/máximas).
+
+---
+
+4. RECOMENDACIONES
+- Revisar y comparar línea por línea las fórmulas de punzonado entre ambas aplicaciones.
+- Verificar la asignación de LL según el tipo de base.
+- Comprobar la conversión de unidades en cada paso.
+- Revisar el manejo de mínimos/máximos y condiciones de seguridad.
+- Validar que los resultados de variables intermedias (DK, DR, PX, PY, PM, QR, TR, KX, KY, SK, UK, G1, KA) sean equivalentes.
+- Realizar pruebas con datos conocidos y comparar resultados.
+
+---
+
+CONCLUSIÓN
+La app sigue los mismos criterios e hipótesis que el programa original, pero pueden existir diferencias en la implementación de fórmulas, conversión de unidades o condiciones de verificación, especialmente en el cálculo de punzonado. Se recomienda revisar y comparar detalladamente cada fórmula y variable involucrada.
+
+Este reporte puede ser utilizado para auditoría técnica, depuración y mejora de la aplicación.

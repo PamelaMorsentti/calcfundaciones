@@ -1,0 +1,104 @@
+{
+  "name": "ElasticBeam",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "ID del proyecto"
+    },
+    "name": {
+      "type": "string",
+      "description": "Identificador de la viga"
+    },
+    "beam_type": {
+      "type": "string",
+      "enum": [
+        "infinite",
+        "semi_infinite",
+        "finite"
+      ],
+      "description": "Tipo de viga"
+    },
+    "width": {
+      "type": "number",
+      "description": "Ancho de viga (m)"
+    },
+    "height": {
+      "type": "number",
+      "description": "Alto de viga (m)"
+    },
+    "length": {
+      "type": "number",
+      "description": "Longitud de viga (m)"
+    },
+    "elastic_modulus": {
+      "type": "number",
+      "description": "M\u00f3dulo de elasticidad E (kg/cm\u00b2)"
+    },
+    "ballast_coefficient": {
+      "type": "number",
+      "description": "Coeficiente de balasto (kg/cm\u00b3)"
+    },
+    "loads": {
+      "type": "array",
+      "description": "Cargas aplicadas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "point",
+              "moment",
+              "distributed"
+            ]
+          },
+          "value": {
+            "type": "number"
+          },
+          "position": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "description": "Resultados del an\u00e1lisis",
+      "properties": {
+        "max_pressure": {
+          "type": "number"
+        },
+        "max_moment": {
+          "type": "number"
+        },
+        "max_shear": {
+          "type": "number"
+        },
+        "deflection_data": {
+          "type": "array"
+        },
+        "moment_data": {
+          "type": "array"
+        },
+        "pressure_data": {
+          "type": "array"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "calculated",
+        "verified"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "project_id",
+    "name",
+    "beam_type"
+  ]
+}

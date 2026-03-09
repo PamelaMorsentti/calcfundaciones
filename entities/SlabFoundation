@@ -1,0 +1,88 @@
+{
+  "name": "SlabFoundation",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "ID del proyecto"
+    },
+    "name": {
+      "type": "string",
+      "description": "Identificador de la losa"
+    },
+    "slab_Lx": {
+      "type": "number",
+      "description": "Dimensi\u00f3n X de la losa (cm)"
+    },
+    "slab_Ly": {
+      "type": "number",
+      "description": "Dimensi\u00f3n Y de la losa (cm)"
+    },
+    "slab_h": {
+      "type": "number",
+      "description": "Espesor de losa h (cm)"
+    },
+    "total_load": {
+      "type": "number",
+      "description": "Carga total P (kg)"
+    },
+    "n_cols_x": {
+      "type": "number",
+      "description": "Cantidad de columnas en X",
+      "default": 2
+    },
+    "n_cols_y": {
+      "type": "number",
+      "description": "Cantidad de columnas en Y",
+      "default": 2
+    },
+    "col_cx": {
+      "type": "number",
+      "description": "Dimensi\u00f3n columna en X (cm)",
+      "default": 30
+    },
+    "col_cy": {
+      "type": "number",
+      "description": "Dimensi\u00f3n columna en Y (cm)",
+      "default": 30
+    },
+    "cover": {
+      "type": "number",
+      "description": "Recubrimiento (cm)",
+      "default": 7.5
+    },
+    "soil_capacity": {
+      "type": "number",
+      "description": "Tensi\u00f3n admisible terreno (kg/cm\u00b2)"
+    },
+    "concrete_fc": {
+      "type": "number",
+      "description": "f'c hormig\u00f3n (kg/cm\u00b2)"
+    },
+    "steel_fy": {
+      "type": "number",
+      "description": "fy acero (kg/cm\u00b2)"
+    },
+    "results": {
+      "type": "object",
+      "description": "Resultados del c\u00e1lculo"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "calculated",
+        "verified",
+        "failed"
+      ],
+      "default": "pending"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "name"
+  ]
+}

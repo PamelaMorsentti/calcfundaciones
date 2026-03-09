@@ -1,0 +1,71 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nombre del proyecto"
+    },
+    "description": {
+      "type": "string",
+      "description": "Descripci\u00f3n del proyecto"
+    },
+    "client": {
+      "type": "string",
+      "description": "Cliente o propietario"
+    },
+    "location": {
+      "type": "string",
+      "description": "Ubicaci\u00f3n de la obra"
+    },
+    "engineer": {
+      "type": "string",
+      "description": "Ingeniero responsable"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha de inicio"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "in_progress",
+        "completed",
+        "archived"
+      ],
+      "default": "draft"
+    },
+    "normative": {
+      "type": "string",
+      "enum": [
+        "CIRSOC_2005",
+        "CIRSOC_1982",
+        "ACI_318",
+        "EUROCODE_2"
+      ],
+      "default": "CIRSOC_2005",
+      "description": "Normativa de c\u00e1lculo"
+    },
+    "soil_bearing_capacity": {
+      "type": "number",
+      "description": "Tensi\u00f3n admisible del terreno (kg/cm\u00b2)"
+    },
+    "concrete_strength": {
+      "type": "number",
+      "description": "Resistencia del hormig\u00f3n f'c (kg/cm\u00b2)"
+    },
+    "steel_yield": {
+      "type": "number",
+      "description": "Tensi\u00f3n de fluencia del acero (kg/cm\u00b2)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notas adicionales"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

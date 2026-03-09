@@ -1,0 +1,90 @@
+INFORME DEL PROGRAMA: BASES AISLADAS
+
+---
+
+FUNCIONAMIENTO GENERAL:
+Este programa calcula las dimensiones, esfuerzos y armaduras de bases aisladas sometidas a carga normal, considerando diferentes tipos de base (centrada, medianera, esquina) y verificando condiciones de punzonado y tensiones admisibles.
+
+---
+
+HIPÓTESIS Y MODELO:
+- La base se modela como un elemento rígido apoyado sobre terreno.
+- Se consideran cargas normales y peso propio.
+- Se verifica la tensión admisible del hormigón y del terreno.
+- Se verifica el punzonado según el tipo de base.
+
+---
+
+DATOS DE ENTRADA:
+- Carga de la columna (N, P)
+- Dimensiones de columna (CX, CY)
+- Dimensiones de base (AX, AY)
+- Altura total de la base (O)
+- Altura del talón (D)
+- Tensión de trabajo del hormigón (BR)
+- Tensión admisible del terreno (TT)
+- Relación entre lados de la base (CF)
+- Altura del tensor (HH)
+- Tipo de base (centrada, medianera, esquina)
+
+---
+
+FÓRMULAS UTILIZADAS:
+
+1. Dimensiones de la base:
+   - AX = \sqrt{CF \cdot P / TT}
+   - AY = \text{INT}(AX / CF)
+   - Si P/(AX·AY) > TT, AX = AX + 2, AY = INT(AX/CF)
+   - Ajustes según dimensiones mínimas y máximas (BX, BY)
+   - OY = (AY - CY)/2, OX = (AX - CX)/2
+   - O = \text{INT}(\max(OY, OX)), mínimo 15 cm
+   - DX = O - 15·(AX - BX), DY = O - 15·(AY - BY)
+   - D = \text{INT}(\max(DX, DY)), mínimo 15 cm
+
+2. Momentos flectores:
+   - XD = N·AX·(AX - CX)/8/1000
+   - YD = N·AY·(AY - CY)/8/1000
+   - Si base medianera/semiinfinita: XD o YD = 1.5·XD o 1.5·YD
+
+3. Dimensionado de armadura:
+   - EX = 100·XD·BY·H²/BR
+   - SX = 0.001·BS·XD·ZX·H
+   - EY = 100·YD·BX·H²/BR
+   - SY = 0.001·BS·YD·ZY·H
+   - SXMIN = SX, SYMIN = SY
+
+4. Verificación al punzonado:
+   - LL = 1 (centrada), 0.6 (medianera), 0.3 (esquina)
+   - C = PI·(CX·CY), DK = C·H, DR = C·H
+   - U = LL·1.5·DR
+   - PX = H·(O-D)·(DR·BX)·(AX-BX)
+   - PY = H·(O-D)·(DR·BY)·(AY-BY)
+   - PM = (PX·PY)/3
+   - PS = N·AX·AY
+   - QR = N·LL·1.5·PS·DK³
+   - TR = QR/U·PM
+   - KX, KY, SK, UK, G1, KA: fórmulas para verificación de armadura y punzonado
+
+5. Esfuerzos y tensiones:
+   - Mx = X·1000 (tcm), My = X·1000 (tcm)
+   - Tensiones: P/(AX·AY), N/(AX·AY)
+   - Armaduras: SX·1000 (cm²), SY·1000 (cm²)
+
+---
+
+FUNCIONAMIENTO PASO A PASO:
+1. Solicita datos geométricos, cargas y materiales.
+2. Calcula dimensiones óptimas de la base.
+3. Calcula momentos flectores y armaduras.
+4. Verifica punzonado y tensiones admisibles.
+5. Muestra resultados de dimensiones, esfuerzos, tensiones y armaduras.
+6. Permite recalcular o imprimir resultados.
+
+---
+
+CONCLUSIÓN:
+El programa es una herramienta para el diseño y verificación de bases aisladas, considerando criterios de resistencia, punzonado y tensiones admisibles. Facilita el dimensionado estructural y la comprobación de seguridad en cimentaciones.
+
+---
+
+Este informe resume el funcionamiento, hipótesis, datos, fórmulas y lógica del programa. Puede ser utilizado como documentación técnica o para consulta en proyectos de ingeniería civil.

@@ -1,0 +1,70 @@
+INFORME DEL PROGRAMA: VIGAS SOBRE LECHO ELÁSTICO
+
+---
+
+FUNCIONAMIENTO GENERAL:
+El programa resuelve el cálculo estructural de vigas apoyadas sobre un lecho elástico (modelo de Winkler), permitiendo analizar vigas de longitud infinita, semiinfinita y finita, bajo cargas puntuales. Calcula esfuerzos, presiones y diagramas.
+
+---
+
+HIPÓTESIS Y MODELO:
+- El terreno se modela como un lecho elástico: la presión es proporcional al desplazamiento (modelo de Winkler).
+- La viga es elástica, definida por sus dimensiones y módulo de elasticidad.
+- Se pueden aplicar varias fuerzas puntuales.
+- Tipos de viga: infinita, semiinfinita, finita.
+
+---
+
+DATOS DE ENTRADA:
+- Ancho (B) y alto (AA) de la viga (metros)
+- Módulo de elasticidad (E) (Kg/cm²)
+- Coeficiente de balasto (C) (Kg/cm²)
+- Tipo de viga
+- Número de fuerzas (N), valores y posiciones
+
+---
+
+FÓRMULAS UTILIZADAS:
+
+1. Momento de inercia:
+   EJ = B · AA⁴ / 12 · E
+
+2. Parámetro de rigidez:
+   A = (C · B / 4 / EJ)^(0.25)
+
+3. Funciones de respuesta:
+   - Presión:
+     P(X) = \frac{A}{2B} [\cos(A X) + \sin(A X)] e^{-A X}
+   - Momento flector:
+     M(X) = \frac{0.25}{A} [\sin(A X) - \cos(A X)] e^{-A X}
+   - Esfuerzo cortante:
+     Q(X) = -0.5 [\cos(A X) - \sin(A X)] e^{-A X}
+
+4. Conversión de unidades:
+   - B = B · 100 (metros a cm)
+   - AA = AA · 100 (metros a cm)
+   - F(F) = F(F) · 1000 (ton a kg)
+   - X(F) = X(F) · 100 (metros a cm)
+
+5. Cálculo de diagramas:
+   - Se calculan valores de presión, momento y esfuerzo cortante en posiciones deseadas o intervalos.
+   - Se almacenan en arrays para graficar o tabular.
+
+---
+
+FUNCIONAMIENTO PASO A PASO:
+1. Solicita datos geométricos y de material.
+2. Solicita tipo de viga y fuerzas aplicadas.
+3. Calcula parámetros y define funciones.
+4. Permite elegir tipo de cálculo: esfuerzos en sección, intervalo, o gráfica.
+5. Muestra resultados de presión, momento y esfuerzo cortante.
+6. Permite repetir cálculos para otras posiciones o vigas.
+
+---
+
+CONCLUSIÓN:
+El programa es una herramienta para ingenieros estructurales, útil para analizar vigas sobre terreno elástico, utilizando hipótesis clásicas y el modelo de Winkler. Facilita el diseño y verificación de vigas en cimentaciones.
+
+---
+
+Este informe resume el funcionamiento, hipótesis, datos, fórmulas y lógica del programa. Puede ser utilizado como documentación técnica o para consulta en proyectos de ingeniería civil.
